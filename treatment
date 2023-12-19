@@ -1,0 +1,75 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# IMPORTANDO OS DADOS
+
+data = pd.read_csv('avgIQpercountry.csv') 
+
+# CONSTRUINDO UM HEATMAP PARA AVERIGUAR AS CORRELAÇÕES ENTRE AS VARIÁVEIS
+
+matrix_df = data.iloc[:, [2,4,5,6,7,8]]
+
+correlation_matrix = matrix_df.corr()
+
+plt.figure(figsize=(10, 8))
+heatmap = sns.heatmap(correlation_matrix, annot=True, fmt=".2f", cmap='RdBu_r', linewidths=.5, annot_kws={"size": 12, "weight": "bold"}, center=0, vmin=-1, vmax=1)
+heatmap.set_xticklabels(heatmap.get_xticklabels(), size=12, family="serif", weight="bold")
+heatmap.set_yticklabels(heatmap.get_yticklabels(), size=12, family="serif", weight="bold")
+plt.show()
+
+# ATRIBUINDO AS CLASSIFICAÇÕES DE QI
+
+QI_classifier = []
+
+for i in range(len(data['Average IQ'])):
+    
+    if data['Average IQ'][i]<20:
+        QI_classifier.append('Profound intellectual disability')
+    
+    elif data['Average IQ'][i]<35:
+        QI_classifier.append('Severe intellectual disability')
+        
+    elif data['Average IQ'][i]<50:
+        QI_classifier.append('Moderate intellectual disability')
+        
+    elif data['Average IQ'][i]<70:
+        QI_classifier.append('Mild intellectual disability')
+    
+    elif data['Average IQ'][i]<85:
+        QI_classifier.append('Borderline intellectual functioning')
+    
+    elif data['Average IQ'][i]<90:
+        QI_classifier.append('Below average')
+    
+    elif data['Average IQ'][i]<110:
+        QI_classifier.append('Average intelligence')
+    
+    elif data['Average IQ'][i]<120:
+        QI_classifier.append('Above average')
+    
+    elif data['Average IQ'][i]<130:
+        QI_classifier.append('Moderately gifted')
+    
+    elif data['Average IQ'][i]<145:
+        QI_classifier.append('Gifted')
+    
+    elif data['Average IQ'][i]<160:
+        QI_classifier.append('Very gifted')
+    
+    elif data['Average IQ'][i]<180:
+        QI_classifier.append('Almost genius')
+    
+    else:
+        QI_classifier.append('Genius')
+
+data.insert(10, "IQ CLASSIFICATION", QI_classifier)
+
+# ELIMINANDO AS LINHAS COM VALORES NULOS
+
+data = data.dropna(subset=['HDI (2021)'], axis = 0)
+
+# SALVANDO O NOVO DATAFRAME EM UMA PLANILHA EM EXCEL
+
+file_name = 'IQ_DATA_2.xlsx'
+data.to_excel(file_name, index = False)
