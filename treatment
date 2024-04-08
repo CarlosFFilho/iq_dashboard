@@ -1,10 +1,14 @@
+# IMPORTANDO BIBLIOTECAS
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
 # IMPORTANDO OS DADOS
 
 data = pd.read_csv('avgIQpercountry.csv') 
+
 
 # CONSTRUINDO UM HEATMAP PARA AVERIGUAR AS CORRELAÇÕES ENTRE AS VARIÁVEIS
 
@@ -17,6 +21,7 @@ heatmap = sns.heatmap(correlation_matrix, annot=True, fmt=".2f", cmap='RdBu_r', 
 heatmap.set_xticklabels(heatmap.get_xticklabels(), size=12, family="serif", weight="bold")
 heatmap.set_yticklabels(heatmap.get_yticklabels(), size=12, family="serif", weight="bold")
 plt.show()
+
 
 # ATRIBUINDO AS CLASSIFICAÇÕES DE QI
 
@@ -64,6 +69,7 @@ for i in range(len(data['Average IQ'])):
         QI_classifier.append('Genius')
 
 data.insert(10, "IQ CLASSIFICATION", QI_classifier)
+
 
 # ELIMINANDO AS LINHAS COM VALORES NULOS
 
